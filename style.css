@@ -140,3 +140,28 @@ body {
         width: 100%;
     }
 }
+/* Highlight selected genre button */
+#genre-filter button.active-genre {
+    background-color: #004e92;
+    color: white;
+    font-weight: bold;
+    border: 2px solid #ffffff;
+    box-shadow: 0 0 10px rgba(0, 78, 146, 0.7);
+    transition: all 0.3s ease;
+}
+
+/* Optional: Style for all genre buttons */
+#genre-filter button {
+    background-color: #f0f0f0;
+    border: none;
+    padding: 10px 15px;
+    margin: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+/* On hover */
+#genre-filter button:hover {
+    background-color: #d0d0d0;
+}
