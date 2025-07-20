@@ -42,9 +42,18 @@ function returnMovies(url) {
             data.results.forEach(movie => {
                 const movieEl = document.createElement("div");
                 movieEl.classList.add("card");
-                movieEl.innerHTML = `
-                    <img class="image" src="${IMG_PATH + movie.poster_path}" alt="${movie.title}">
-                    <h3 class="movie-title">${movie.title}</h3>`;
+                const amazonSearchLink = `https://www.amazon.com/s?k=${encodeURIComponent(movie.title)}&tag=technationmov-20`;
+const tmdbLink = `https://www.themoviedb.org/movie/${movie.id}`;
+
+movieEl.innerHTML = `
+    <a href="${tmdbLink}" target="_blank" class="movie-link">
+        <img class="image" src="${IMG_PATH + movie.poster_path}" alt="${movie.title}">
+    </a>
+    <a href="${amazonSearchLink}" target="_blank" class="movie-title-link">
+        <h3 class="movie-title">${movie.title}</h3>
+    </a>
+`;
+
                 main.appendChild(movieEl);
             });
         })
