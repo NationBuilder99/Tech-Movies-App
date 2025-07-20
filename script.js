@@ -94,19 +94,17 @@ form.addEventListener("submit", (e) => {
 // Highlight selected genre and fetch filtered movies
 genreButtons.forEach(button => {
     button.addEventListener("click", () => {
-        const genre = button.getAttribute("data-genre");
-
-        // Highlight the selected genre
         genreButtons.forEach(btn => btn.classList.remove("active-genre"));
         button.classList.add("active-genre");
-
-        // Load movies by genre or all
-        const url = genre
-            ? `https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&with_genres=${genre}`
-            : API_LINK;
-        returnMovies(url);
+        freeMoviesBtn.classList.remove("active-genre"); // remove from free
     });
 });
+
+freeMoviesBtn.addEventListener("click", () => {
+    genreButtons.forEach(btn => btn.classList.remove("active-genre"));
+    freeMoviesBtn.classList.add("active-genre");
+});
+
 const freeMoviesBtn = document.getElementById("free-movies-btn");
 
 freeMoviesBtn.addEventListener("click", () => {
