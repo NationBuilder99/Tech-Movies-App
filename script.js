@@ -45,7 +45,8 @@ document.addEventListener("DOMContentLoaded", () => {
       const el = document.createElement("div");
       el.classList.add("card");
       el.innerHTML = `
-        <img src="${IMG_PATH + movie.poster_path}" alt="${movie.title}">
+        <img src="${movie.poster_path ? IMG_PATH + movie.poster_path : 'https://via.placeholder.com/300x450?text=No+Image'}" alt="${movie.title}">
+
         <h3>${movie.title}</h3>
       `;
       main.appendChild(el);
