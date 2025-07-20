@@ -35,24 +35,39 @@ function returnMovies(url) {
         .then(res => res.json())
         .then(data => {
             main.innerHTML = "";
-            if (data.results.length === 0) {
-                main.innerHTML = "<p>No movies found.</p>";
-                return;
-            }
+
+            const freeMovies = {
+                "The Matrix": "https://www.youtube.com/watch?v=vKQi3bBA1y8",
+                "Plan 9 from Outer Space": "https://www.youtube.com/watch?v=2NoE1nU1WwA"
+                // Add more titles and YouTube links here
+            };
+
             data.results.forEach(movie => {
                 const movieEl = document.createElement("div");
                 movieEl.classList.add("card");
-                const amazonSearchLink = `https://www.amazon.com/s?k=${encodeURIComponent(movie.title)}&tag=technationmov-20`;
-const tmdbLink = `https://www.themoviedb.org/movie/${movie.id}`;
 
-movieEl.innerHTML = `
-    <a href="${tmdbLink}" target="_blank" class="movie-link">
-        <img class="image" src="${IMG_PATH + movie.poster_path}" alt="${movie.title}">
-    </a>
-    <a href="${amazonSearchLink}" target="_blank" class="movie-title-link">
-        <h3 class="movie-title">${movie.title}</h3>
-    </a>
-`;
+                let buttonsHTML = "";
+
+                // Check if movie is free
+                if (freeMovies[movie.title]) {
+                    buttonsHTML += `
+                        <a href="${freeMovies[movie.title]}" target="_blank" class="watch-free-button">🎬 Watch Free</a>
+                    `;
+                } else {
+                    // Default to Premium Amazon Search Link
+                    const amazonSearchURL = `https://www.amazon.com/s?k=${encodeURIComponent(movie.title)}+movie`;
+                    buttonsHTML += `
+                        <a href="${amazonSearchURL}" target="_blank" class="premium-button">💰 Premium</a>
+                    `;
+                }
+
+                movieEl.innerHTML = `
+                    <img class="image" src="${IMG_PATH + movie.poster_path}" alt="${movie.title}">
+                    <h3 class="movie-title">${movie.title}</h3>
+                    <div class="movie-buttons">
+                        ${buttonsHTML}
+                    </div>
+                `;
 
                 main.appendChild(movieEl);
             });
@@ -62,6 +77,8 @@ movieEl.innerHTML = `
         })
         .finally(hideLoader);
 }
+
+
 
 // Handle search
 form.addEventListener("submit", (e) => {
