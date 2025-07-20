@@ -161,7 +161,25 @@ body {
     transition: all 0.2s ease;
 }
 
+
 /* On hover */
 #genre-filter button:hover {
     background-color: #d0d0d0;
+}
+
+@media (max-width: 600px) {
+    .main-nav {
+        flex-direction: column;
+        text-align: center;
+        gap: 1rem;
+    }
+
+    #genre-filter {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    #genre-filter button {
+        width: 80%;
+    }
 }
