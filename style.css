@@ -103,6 +103,38 @@ body {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
     transition: transform 0.3s ease;
 }
+.movie-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 0.5rem;
+}
+
+.watch-free-button, .premium-button {
+    padding: 0.4rem 0.8rem;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 0.9rem;
+    transition: background 0.3s ease;
+}
+
+.watch-free-button {
+    background-color: #00ffcc;
+    color: black;
+}
+
+.watch-free-button:hover {
+    background-color: #00ccaa;
+}
+
+.premium-button {
+    background-color: #ff6600;
+    color: white;
+}
+
+.premium-button:hover {
+    background-color: #e65c00;
+}
 
 .card:hover {
     transform: scale(1.05);
