@@ -9,10 +9,10 @@ const search = document.getElementById("search");
 const loader = document.getElementById("loader");
 const toggleMode = document.getElementById("toggle-mode");
 const genreButtons = document.querySelectorAll("#genre-filter button");
+const freeMoviesBtn = document.getElementById("free-movies-btn");
 
 let darkMode = true;
 
-// Toggle light/dark mode
 function toggleTheme() {
     darkMode = !darkMode;
     document.body.style.background = darkMode ? 'linear-gradient(to right, #000428, #004e92)' : '#ffffff';
@@ -20,7 +20,6 @@ function toggleTheme() {
 }
 toggleMode.addEventListener("click", toggleTheme);
 
-// Show/hide loading spinner
 function showLoader() {
     loader.style.display = "block";
 }
@@ -28,47 +27,19 @@ function hideLoader() {
     loader.style.display = "none";
 }
 
-// Fetch and display movies
 function returnMovies(url) {
     showLoader();
     fetch(url)
         .then(res => res.json())
         .then(data => {
             main.innerHTML = "";
-
-            const freeMovies = {
-                "The Matrix": "https://www.youtube.com/watch?v=vKQi3bBA1y8",
-                "Plan 9 from Outer Space": "https://www.youtube.com/watch?v=2NoE1nU1WwA"
-                // Add more titles and YouTube links here
-            };
-
             data.results.forEach(movie => {
                 const movieEl = document.createElement("div");
                 movieEl.classList.add("card");
-
-                let buttonsHTML = "";
-
-                // Check if movie is free
-                if (freeMovies[movie.title]) {
-                    buttonsHTML += `
-                        <a href="${freeMovies[movie.title]}" target="_blank" class="watch-free-button">🎬 Watch Free</a>
-                    `;
-                } else {
-                    // Default to Premium Amazon Search Link
-                    const amazonSearchURL = `https://www.amazon.com/s?k=${encodeURIComponent(movie.title)}+movie`;
-                    buttonsHTML += `
-                        <a href="${amazonSearchURL}" target="_blank" class="premium-button">💰 Premium</a>
-                    `;
-                }
-
                 movieEl.innerHTML = `
                     <img class="image" src="${IMG_PATH + movie.poster_path}" alt="${movie.title}">
                     <h3 class="movie-title">${movie.title}</h3>
-                    <div class="movie-buttons">
-                        ${buttonsHTML}
-                    </div>
                 `;
-
                 main.appendChild(movieEl);
             });
         })
@@ -78,63 +49,56 @@ function returnMovies(url) {
         .finally(hideLoader);
 }
 
-
-
-// Handle search
+// 🔍 SEARCH
 form.addEventListener("submit", (e) => {
     e.preventDefault();
     const searchTerm = search.value;
     if (searchTerm) {
         returnMovies(SEARCH_API + searchTerm);
         search.value = "";
-        clearActiveGenres();
     }
 });
 
-// Highlight selected genre and fetch filtered movies
+// 🎯 GENRE BUTTONS
 genreButtons.forEach(button => {
     button.addEventListener("click", () => {
+        // Remove highlight from all
         genreButtons.forEach(btn => btn.classList.remove("active-genre"));
+
+        // Add highlight to clicked
         button.classList.add("active-genre");
-        freeMoviesBtn.classList.remove("active-genre"); // remove from free
+
+        const genre = button.getAttribute("data-genre");
+        const url = genre ? `https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&with_genres=${genre}` : API_LINK;
+        returnMovies(url);
     });
 });
 
-freeMoviesBtn.addEventListener("click", () => {
-    genreButtons.forEach(btn => btn.classList.remove("active-genre"));
-    freeMoviesBtn.classList.add("active-genre");
-});
+// 🎬 FREE MOVIES
+if (freeMoviesBtn) {
+    freeMoviesBtn.addEventListener("click", () => {
+        genreButtons.forEach(btn => btn.classList.remove("active-genre")); // remove active from others
+        freeMoviesBtn.classList.add("active-genre"); // optional: highlight free tab
 
-const freeMoviesBtn = document.getElementById("free-movies-btn");
+        const freeMovies = {
+            "The Matrix": "https://www.youtube.com/watch?v=vKQi3bBA1y8",
+            "Plan 9 from Outer Space": "https://www.youtube.com/watch?v=2NoE1nU1WwA"
+        };
 
-freeMoviesBtn.addEventListener("click", () => {
-    // main.innerHTML = "";
-
-    const freeMovies = {
-        "The Matrix": "https://www.youtube.com/watch?v=vKQi3bBA1y8",
-        "Plan 9 from Outer Space": "https://www.youtube.com/watch?v=2NoE1nU1WwA"
-        // Add more free movies here
-    };
-    main.innerHTML = ""; // clear current movies
-    Object.keys(freeMovies).forEach(title => {
-        const movieEl = document.createElement("div");
-        movieEl.classList.add("card");
-        movieEl.innerHTML = `
-            <img class="image" src="https://via.placeholder.com/200x300?text=${encodeURIComponent(title)}" alt="${title}">
-            <h3 class="movie-title">${title}</h3>
-            <div class="movie-buttons">
-                <a href="${freeMovies[title]}" target="_blank" class="watch-free-button">🎬 Watch Free</a>
-            </div>
-        `;
-        main.appendChild(movieEl);
+        main.innerHTML = "";
+        Object.keys(freeMovies).forEach(title => {
+            const movieEl = document.createElement("div");
+            movieEl.classList.add("card");
+            movieEl.innerHTML = `
+                <img class="image" src="https://via.placeholder.com/200x300?text=${encodeURIComponent(title)}" alt="${title}">
+                <h3 class="movie-title">${title}</h3>
+                <div class="movie-buttons">
+                    <a href="${freeMovies[title]}" target="_blank" class="watch-free-button">🎬 Watch Free</a>
+                </div>
+            `;
+            main.appendChild(movieEl);
+        });
     });
-});
-
-
-// Remove genre highlight when search is used
-function clearActiveGenres() {
-    genreButtons.forEach(btn => btn.classList.remove("active-genre"));
 }
 
-// Initial load
 returnMovies(API_LINK);
