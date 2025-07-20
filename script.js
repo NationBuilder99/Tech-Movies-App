@@ -108,14 +108,14 @@ freeMoviesBtn.addEventListener("click", () => {
 const freeMoviesBtn = document.getElementById("free-movies-btn");
 
 freeMoviesBtn.addEventListener("click", () => {
-    main.innerHTML = "";
+    // main.innerHTML = "";
 
     const freeMovies = {
         "The Matrix": "https://www.youtube.com/watch?v=vKQi3bBA1y8",
         "Plan 9 from Outer Space": "https://www.youtube.com/watch?v=2NoE1nU1WwA"
         // Add more free movies here
     };
-
+    main.innerHTML = ""; // clear current movies
     Object.keys(freeMovies).forEach(title => {
         const movieEl = document.createElement("div");
         movieEl.classList.add("card");
