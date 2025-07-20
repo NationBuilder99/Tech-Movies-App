@@ -75,4 +75,25 @@ form input {
   text-decoration: none;
   border-radius: 5px;
 }
+/* Light Mode Support */
+body.light-mode {
+  background-color: #fff;
+  color: #000;
+}
+
+body.light-mode header,
+body.light-mode .card {
+  background-color: #f0f0f0;
+  color: #000;
+}
+
+body.light-mode #genre-filter button {
+  background-color: #ddd;
+  color: #000;
+}
+
+body.light-mode .active-genre {
+  background-color: #0077ff;
+  color: #fff;
+}
 
