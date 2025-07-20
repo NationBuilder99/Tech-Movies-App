@@ -1,4 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
+  
+  // all your code here
+document.addEventListener("DOMContentLoaded", () => {
   const API_KEY = '2ddc4e61534d49235dccbac01c4bb650';
   const API_LINK = `https://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=${API_KEY}`;
   const IMG_PATH = 'https://image.tmdb.org/t/p/w1280';
@@ -94,4 +97,8 @@ document.addEventListener("DOMContentLoaded", () => {
   // Load popular on start
   getMovies(API_LINK);
 });
+
+  
+});
+
 
