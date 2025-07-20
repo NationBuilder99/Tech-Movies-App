@@ -226,3 +226,11 @@ body {
 .movie-title-link:hover {
     color: #00f7ff;
 }
+
+#genre-filter button.active-genre {
+    background-color: #00ffcc;
+    color: black;
+    font-weight: bold;
+    border: 2px solid #004e92;
+}
+
