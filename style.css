@@ -246,3 +246,9 @@ body {
     background-color: #00ffcc;
     color: #000;
 }
+
+.active-genre {
+    background-color: #00ffcc;
+    color: #000;
+    border: 1px solid #000;
+}
