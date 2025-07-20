@@ -234,3 +234,15 @@ body {
     border: 2px solid #004e92;
 }
 
+#free-movies-btn {
+    background-color: #333;
+    color: #00ffcc;
+    padding: 0.6em 1em;
+    border: 1px solid #00ffcc;
+    border-radius: 5px;
+    cursor: pointer;
+}
+#free-movies-btn:hover {
+    background-color: #00ffcc;
+    color: #000;
+}
