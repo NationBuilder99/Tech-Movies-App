@@ -1,1 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tech Movies App</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>Tech Movies App</h1>
+    <form id="form">
+      <input type="text" id="search" placeholder="Search..."/>
+    </form>
+    <button id="toggle-mode">🌗</button>
+  </header>
+
+  <nav id="genre-filter">
+    <button data-genre="28">Action</button>
+    <button data-genre="35">Comedy</button>
+    <button data-genre="18">Drama</button>
+    <button data-genre="27">Horror</button>
+    <button data-genre="">All</button>
+    <button id="free-movies-btn">🎬 Free Movies</button>
+  </nav>
+
+  <div id="loader">Loading...</div>
+  <main id="main"></main>
+
+  <script src="script.js"></script>
+</body>
+</html>
 
