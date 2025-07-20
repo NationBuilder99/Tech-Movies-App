@@ -1,104 +1,103 @@
-document.addEventListener("DOMContentLoaded", () => {
-  
-  // all your code here
-document.addEventListener("DOMContentLoaded", () => {
-  const API_KEY = '2ddc4e61534d49235dccbac01c4bb650';
-  const API_LINK = `https://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=${API_KEY}`;
-  const IMG_PATH = 'https://image.tmdb.org/t/p/w1280';
-  const SEARCH_API = `https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&query=`;
+const API_KEY = '2ddc4e61534d49235dccbac01c4bb650';
+const API_LINK = `https://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=${API_KEY}&page=1`;
+const IMG_PATH = 'https://image.tmdb.org/t/p/w500';
+const SEARCH_API = `https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&query=`;
 
-  const main = document.getElementById("main");
-  const form = document.getElementById("form");
-  const search = document.getElementById("search");
-  const loader = document.getElementById("loader");
-  const toggleMode = document.getElementById("toggle-mode");
-  const genreButtons = document.querySelectorAll("#genre-filter button[data-genre]");
-  const freeMoviesBtn = document.getElementById("free-movies-btn");
+const main = document.getElementById("main");
+const form = document.getElementById("form");
+const search = document.getElementById("search");
+const loader = document.getElementById("loader");
+const toggleMode = document.getElementById("toggle-mode");
+const genreButtons = document.querySelectorAll("#genre-filter button");
 
-  toggleMode.addEventListener("click", () => {
-    document.body.classList.toggle("light-mode");
-  });
+let darkMode = true;
 
-  function showLoader() {
+// Toggle theme
+toggleMode.addEventListener("click", () => {
+    darkMode = !darkMode;
+    document.body.classList.toggle("light-theme", !darkMode);
+});
+
+// Show loader
+function showLoader() {
     loader.style.display = "block";
-    main.innerHTML = "";
-  }
+}
 
-  function hideLoader() {
+// Hide loader
+function hideLoader() {
     loader.style.display = "none";
-  }
+}
 
-  function getMovies(url) {
+// Fetch and display movies
+function returnMovies(url) {
     showLoader();
     fetch(url)
-      .then(res => res.json())
-      .then(data => {
-        hideLoader();
-        displayMovies(data.results);
-      })
-      .catch(() => {
-        hideLoader();
-        main.innerHTML = "<p>Error loading movies.</p>";
-      });
-  }
+        .then(res => res.json())
+        .then(data => {
+            main.innerHTML = "";
 
-  function displayMovies(movies) {
-    main.innerHTML = '';
-    movies.forEach(movie => {
-      const el = document.createElement("div");
-      el.classList.add("card");
-      el.innerHTML = `
-        <img src="${movie.poster_path ? IMG_PATH + movie.poster_path : 'https://via.placeholder.com/300x450?text=No+Image'}" alt="${movie.title}">
+            if (data.results.length === 0) {
+                main.innerHTML = "<p>No movies found.</p>";
+                return;
+            }
 
-        <h3>${movie.title}</h3>
-      `;
-      main.appendChild(el);
-    });
-  }
+            data.results.forEach(movie => {
+                const movieEl = document.createElement("div");
+                movieEl.classList.add("card");
 
-  form.addEventListener("submit", (e) => {
+                movieEl.innerHTML = `
+                    <img class="image" src="${movie.poster_path ? IMG_PATH + movie.poster_path : 'https://via.placeholder.com/500x750?text=No+Image'}" alt="${movie.title}">
+                    <h3 class="movie-title">${movie.title}</h3>
+                    <div class="watch-options">
+                        <button class="free-watch">Watch Free</button>
+                        <button class="premium-watch">Premium</button>
+                    </div>
+                `;
+
+                main.appendChild(movieEl);
+
+                const freeBtn = movieEl.querySelector(".free-watch");
+                const premiumBtn = movieEl.querySelector(".premium-watch");
+
+                freeBtn.addEventListener("click", () => {
+                    alert(`Enjoy a free preview of "${movie.title}"!`);
+                });
+
+                premiumBtn.addEventListener("click", () => {
+                    alert(`Redirecting to premium access for "${movie.title}".`);
+                });
+            });
+        })
+        .catch(() => {
+            main.innerHTML = '<p>Error loading movies. Try again later.</p>';
+        })
+        .finally(hideLoader);
+}
+
+// Search functionality
+form.addEventListener("submit", (e) => {
     e.preventDefault();
-    const term = search.value.trim();
-    if (term) {
-      getMovies(SEARCH_API + term);
-      search.value = '';
+    const searchTerm = search.value.trim();
+    if (searchTerm) {
+        returnMovies(SEARCH_API + encodeURIComponent(searchTerm));
+        search.value = "";
     }
-  });
+});
 
-  genreButtons.forEach(button => {
+// Genre filtering
+genreButtons.forEach(button => {
     button.addEventListener("click", () => {
-      genreButtons.forEach(btn => btn.classList.remove("active-genre"));
-      button.classList.add("active-genre");
-      const genre = button.getAttribute("data-genre");
-      const url = genre ? `${API_LINK}&with_genres=${genre}` : API_LINK;
-      getMovies(url);
-    });
-  });
+        genreButtons.forEach(btn => btn.classList.remove("active-genre"));
+        button.classList.add("active-genre");
 
-  freeMoviesBtn.addEventListener("click", () => {
-    genreButtons.forEach(btn => btn.classList.remove("active-genre"));
-    freeMoviesBtn.classList.add("active-genre");
-    main.innerHTML = "";
-    const freeList = {
-      "The Matrix": "https://www.youtube.com/watch?v=vKQi3bBA1y8",
-      "Kung Fury": "https://www.youtube.com/watch?v=bS5P_LAqiVg"
-    };
-    Object.entries(freeList).forEach(([title, url]) => {
-      const card = document.createElement("div");
-      card.classList.add("card");
-      card.innerHTML = `
-        <h3>${title}</h3>
-        <a href="${url}" target="_blank" class="watch-free-button">🎬 Watch Free</a>
-      `;
-      main.appendChild(card);
-    });
-  });
+        const genreId = button.getAttribute("data-genre");
+        const url = genreId 
+            ? `https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&with_genres=${genreId}`
+            : API_LINK;
 
-  // Load popular on start
-  getMovies(API_LINK);
+        returnMovies(url);
+    });
 });
 
-  
-});
-
-
+// Initial fetch
+returnMovies(API_LINK);
