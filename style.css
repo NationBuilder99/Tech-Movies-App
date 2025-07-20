@@ -1,1 +1,78 @@
+body {
+  margin: 0;
+  font-family: sans-serif;
+  background-color: #111;
+  color: white;
+}
+
+header {
+  padding: 1rem;
+  background: #222;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+form input {
+  padding: 0.5rem;
+  border: none;
+  border-radius: 5px;
+}
+
+#genre-filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 1rem;
+  justify-content: center;
+}
+
+#genre-filter button {
+  padding: 0.5rem 1rem;
+  background-color: #333;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.active-genre {
+  background-color: #00ffcc;
+  color: #000;
+}
+
+#main {
+  display: grid;
+  gap: 1rem;
+  padding: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+
+.card {
+  background-color: #222;
+  padding: 1rem;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.card img {
+  width: 100%;
+  border-radius: 8px;
+}
+
+#loader {
+  text-align: center;
+  padding: 1rem;
+  display: none;
+}
+
+.watch-free-button {
+  display: inline-block;
+  margin-top: 0.5rem;
+  padding: 0.5rem;
+  background-color: #00ffcc;
+  color: black;
+  text-decoration: none;
+  border-radius: 5px;
+}
 
