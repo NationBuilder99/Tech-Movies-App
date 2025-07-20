@@ -60,12 +60,15 @@ function returnMovies(url) {
                 const premiumBtn = movieEl.querySelector(".premium-watch");
 
                 freeBtn.addEventListener("click", () => {
-                    alert(`Enjoy a free preview of "${movie.title}"!`);
+                    window.location.href = `https://www.youtube.com/results?search_query=${encodeURIComponent(movie.title)}+full+movie`;
                 });
 
                 premiumBtn.addEventListener("click", () => {
-                    alert(`Redirecting to premium access for "${movie.title}".`);
+                    window.open(`https://www.amazon.com/s?k=${encodeURIComponent(movie.title)}+movie`, '_blank');
                 });
+
+
+                
             });
         })
         .catch(() => {
